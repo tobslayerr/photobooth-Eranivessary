@@ -1,0 +1,67 @@
+@import url('https://fonts.googleapis.com/css2?family=Titan+One&family=Quicksand:wght@400;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* Funday Palette */
+    --color-sea-light: #7DD3FC;  /* Langit/Laut terang */
+    --color-sea-dark: #0EA5E9;   /* Laut dalam */
+    --color-sand: #FDE68A;       /* Pasir */
+    --color-sun: #F59E0B;        /* Matahari */
+    --color-coral: #FB7185;      /* Aksen Coral/Kepiting */
+    --color-text: #0F172A;
+  }
+
+  html, body {
+    font-family: 'Quicksand', sans-serif;
+    background-color: var(--color-sea-light);
+    color: var(--color-text);
+    overflow: hidden; /* Prevent scroll bouncing */
+  }
+}
+
+@layer utilities {
+  .font-fun { font-family: 'Titan One', cursive; }
+  
+  /* Background Animasi Ombak */
+  .bg-funday {
+    background: linear-gradient(180deg, #BAE6FD 0%, #7DD3FC 40%, #FDE68A 90%, #FCD34D 100%);
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* Bubble Decoration Class */
+  .bubble {
+    position: absolute;
+    background: rgba(255, 255, 255, 0.4);
+    border-radius: 50%;
+    animation: floatUp linear infinite;
+    bottom: -100px;
+    pointer-events: none;
+  }
+
+  @keyframes floatUp {
+    0% { transform: translateY(0) scale(1); opacity: 0; }
+    20% { opacity: 0.8; }
+    100% { transform: translateY(-120vh) scale(1.2); opacity: 0; }
+  }
+
+  /* Tombol Utama yang "Squishy" */
+  .btn-funday {
+    @apply font-fun text-white uppercase tracking-wider py-4 px-8 rounded-full shadow-[0_6px_0_rgba(0,0,0,0.2)] transition-all transform active:translate-y-1 active:shadow-none;
+    background: linear-gradient(to bottom, #F472B6, #DB2777); /* Pink Coral */
+    border: 3px solid white;
+  }
+  .btn-funday:hover {
+    @apply brightness-110 -translate-y-1 shadow-[0_8px_0_rgba(0,0,0,0.2)];
+  }
+  
+  .btn-secondary-funday {
+    @apply font-fun text-white uppercase tracking-wider py-3 px-6 rounded-full shadow-[0_4px_0_rgba(0,0,0,0.2)] transition-all;
+    background: linear-gradient(to bottom, #38BDF8, #0284C7); /* Ocean Blue */
+    border: 3px solid white;
+  }
+}
