@@ -3,7 +3,7 @@ import MainLayout from '../components/MainLayout';
 import { usePhotos } from '../context/PhotoContext';
 import { useEffect, useState } from 'react';
 import { AiFillCamera, AiFillCloud } from 'react-icons/ai';
-import { FaSun, FaUmbrellaBeach } from 'react-icons/fa';
+import { FaSun } from 'react-icons/fa';
 import { GiPalmTree } from 'react-icons/gi';
 
 const styles = `
@@ -242,17 +242,17 @@ const WelcomePage = () => {
           
           {/* Logo Group */}
           <div className="mb-6 relative">
-            <h1 className="main-title">
-              FUNDAY
+            <h1 className="main-title" style={{ fontSize: 'clamp(3rem, 8vw, 5rem)' }}>
+              ERANIVESSARY
             </h1>
             <div className="year-badge">
-              2025
+              2026
             </div>
           </div>
 
           <p className="subtitle">
-             <FaUmbrellaBeach className="inline mr-2" />
-             SUMMER VIBES PHOTOBOOTH
+             <AiFillCamera className="inline mr-2" />
+             PHOTOBOOTH - 23 MEI 2026
           </p>
 
           {/* Tombol Mulai Besar */}

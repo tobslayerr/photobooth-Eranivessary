@@ -371,7 +371,8 @@ const CameraPage: React.FC = () => {
                 width: `${Math.random() * 30 + 10}px`,
                 height: `${Math.random() * 30 + 10}px`,
                 animationDuration: `${Math.random() * 5 + 4}s`,
-                animationDelay: `${Math.random() * 5}s`
+                animationDelay: `${Math.rando
+                ]]]]]\() * 5}s`
             }} 
           />
         ))}
