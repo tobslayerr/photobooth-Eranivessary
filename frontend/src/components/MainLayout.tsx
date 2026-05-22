@@ -8,10 +8,17 @@ interface Props {
 
 const MainLayout: React.FC<Props> = ({ children }) => {
   return (
-    <main className="h-screen w-screen overflow-hidden bg-funday text-slate-800">
-      {/* Dekorasi Ombak Statis di Background (Opsional CSS shape) */}
-      <div className="absolute bottom-0 left-0 w-full h-32 bg-[#F59E0B] opacity-20 rounded-t-[100%] scale-150 translate-y-16 pointer-events-none blur-3xl"></div>
-      
+    <main 
+      className="h-screen w-screen overflow-hidden text-[#2D1714]"
+      style={{
+        backgroundColor: '#FFFAEE', // Krem Kertas
+        backgroundImage: `
+          linear-gradient(rgba(120, 162, 210, 0.25) 1.5px, transparent 1.5px),
+          linear-gradient(90deg, rgba(120, 162, 210, 0.25) 1.5px, transparent 1.5px)
+        `, // Efek Grid Buku Kotak-kotak dengan warna Soft Blue (#78A2D2)
+        backgroundSize: '35px 35px'
+      }}
+    >
       <div className="relative z-10 w-full h-full">
         {children}
       </div>

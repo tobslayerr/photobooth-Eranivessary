@@ -11,197 +11,165 @@ import {
   AiFillPauseCircle,
   AiFillPlayCircle
 } from 'react-icons/ai';
-import { FaSun, FaCloud } from 'react-icons/fa';
-import { GiPalmTree } from 'react-icons/gi';
 
-// --- CSS STYLES ---
+// --- CSS STYLES (SCRAPBOOK THEME) ---
 const styles = `
-  @import url('https://fonts.googleapis.com/css2?family=Titan+One&family=Patrick+Hand&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Shrikhand&family=Poppins:wght@400;600;800&family=Caveat:wght@700&display=swap');
 
   /* FONTS */
-  .font-title { font-family: 'Titan One', cursive; }
-  .font-hand { font-family: 'Patrick Hand', cursive; }
+  .font-shrikhand { font-family: 'Shrikhand', serif; }
+  .font-poppins { font-family: 'Poppins', sans-serif; }
+  .font-caveat { font-family: 'Caveat', cursive; }
 
-  /* BACKGROUND ANIMATIONS */
-  @keyframes floatCloud {
-    0% { transform: translateX(-100px); opacity: 0.8; }
-    50% { opacity: 1; }
-    100% { transform: translateX(100vw); opacity: 0.8; }
+  /* Washi Tapes */
+  .washi-tape {
+    position: absolute;
+    height: 35px;
+    background-color: rgba(255,255,255,0.4);
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    backdrop-filter: blur(2px);
+    z-index: 10;
   }
-  @keyframes spinSun {
-    from { transform: rotate(0deg); }
-    to { transform: rotate(360deg); }
-  }
-  @keyframes sway {
-    0%, 100% { transform: rotate(-5deg); }
-    50% { transform: rotate(5deg); }
-  }
-  @keyframes floatBubble {
-    0% { transform: translateY(100vh) scale(0.5); opacity: 0; }
-    50% { opacity: 0.8; }
-    100% { transform: translateY(-20vh) scale(1.2); opacity: 0; }
-  }
+  .tape-blue { background-color: rgba(120, 162, 210, 0.8); }   /* #78A2D2 */
+  .tape-olive { background-color: rgba(156, 162, 42, 0.8); }    /* #9CA22A */
+  .tape-yellow { background-color: rgba(254, 255, 175, 0.9); }  /* #FEFFAF */
+
   @keyframes fadeIn {
     from { opacity: 0; transform: translateY(20px); }
     to { opacity: 1; transform: translateY(0); }
   }
 
-  /* CLASSES */
-  .summer-bg {
-    background: linear-gradient(to bottom, #4facfe 0%, #00f2fe 60%, #fff 100%);
-    overflow: hidden;
-    position: relative;
-    width: 100%; height: 100%;
-  }
-
-  .cloud-deco {
-    position: absolute;
-    color: rgba(255, 255, 255, 0.9);
-    filter: drop-shadow(0 4px 10px rgba(0,0,0,0.05));
-    z-index: 1; pointer-events: none;
-  }
-
-  .sun-deco {
-    position: absolute;
-    top: -60px; right: -60px;
-    color: #FFD700;
-    font-size: 180px;
-    z-index: 0;
-    animation: spinSun 25s linear infinite;
-    filter: drop-shadow(0 0 20px rgba(255, 165, 0, 0.4));
-    pointer-events: none;
-  }
-
-  .palm-tree {
-    position: absolute;
-    bottom: -10px;
-    font-size: 150px;
-    color: #2E8B57;
-    z-index: 2;
-    filter: drop-shadow(5px 5px 0 rgba(0,0,0,0.1));
-    animation: sway 5s ease-in-out infinite alternate;
-    pointer-events: none;
-  }
-
-  .bubble {
-    position: absolute;
-    background: rgba(255, 255, 255, 0.4);
-    border-radius: 50%;
-    border: 1px solid rgba(255, 255, 255, 0.6);
-    bottom: -50px;
-    animation: floatBubble linear infinite;
-    z-index: 2; pointer-events: none;
-  }
-
-  /* --- BIG POLAROID FRAME --- */
+  /* --- BIG POLAROID FRAME (SCRAPBOOK STYLE) --- */
   .polaroid-container {
     position: relative;
     width: 100%;
-    max-width: 650px; /* Ukuran Maksimal Lebih Besar */
+    max-width: 650px; 
     margin: 0 auto;
     z-index: 20;
   }
 
   .polaroid-frame {
-    background: white;
-    padding: 15px 15px 70px 15px;
-    box-shadow: 0 25px 60px rgba(0,0,0,0.2);
-    border-radius: 6px;
+    background: #FFFAEE; /* Cream Paper */
+    padding: 15px 15px 80px 15px;
+    border: 4px solid #2D1714;
+    box-shadow: 15px 15px 0 #78A2D2;
     transform: rotate(-1deg);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
-    animation: fadeIn 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
+    animation: fadeIn 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
     position: relative;
-    overflow: hidden;
   }
   
   .polaroid-frame:hover {
-    transform: rotate(0deg) scale(1.01);
-    box-shadow: 0 30px 70px rgba(0,0,0,0.25);
+    transform: rotate(0deg) scale(1.02);
+    box-shadow: 20px 20px 0 #2D1714;
   }
 
   .photo-number {
     position: absolute; bottom: 20px; right: 25px;
-    font-family: 'Titan One', cursive; color: #cbd5e1; font-size: 2.5rem; z-index: 0;
+    font-family: 'Shrikhand', serif; 
+    color: #273A5D; 
+    font-size: 2.5rem; 
+    z-index: 0;
   }
   
   .handwriting {
     position: absolute; bottom: 25px; left: 25px;
-    font-family: 'Patrick Hand', cursive; color: #475569; font-size: 1.8rem; z-index: 1;
+    font-family: 'Caveat', cursive; 
+    color: #2D1714; 
+    font-size: 2.2rem; 
+    font-weight: bold;
+    z-index: 1;
   }
 
   /* --- FLOATING NAVIGATION BUTTONS --- */
-  .nav-btn-float {
+  .nav-btn-scrap {
     position: absolute;
     top: 50%;
-    transform: translateY(-70%); /* Sedikit ke atas agar center dengan foto */
+    transform: translateY(-70%); 
     width: 60px; height: 60px;
-    border-radius: 50%;
-    background: rgba(255, 255, 255, 0.6);
-    backdrop-filter: blur(8px);
-    border: 2px solid rgba(255, 255, 255, 0.8);
-    color: #0ea5e9;
+    background: #FEFFAF;
+    border: 3px solid #2D1714;
+    color: #2D1714;
     display: flex; align-items: center; justify-content: center;
     font-size: 2rem;
     cursor: pointer;
-    box-shadow: 0 8px 20px rgba(0,0,0,0.15);
-    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    box-shadow: 6px 6px 0 #2D1714;
+    transition: all 0.1s;
     z-index: 50;
-    opacity: 0.8;
   }
 
-  .nav-btn-float:hover {
-    background: #fff;
-    transform: translateY(-70%) scale(1.15);
-    color: #0284c7;
-    opacity: 1;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+  .nav-btn-scrap:active {
+    background: #FFFAEE;
+    transform: translateY(-70%) translate(4px, 4px);
+    box-shadow: 0 0 0 #2D1714;
   }
 
   .nav-prev { left: -30px; }
   .nav-next { right: -30px; }
 
-  /* Mobile adjustment for buttons */
   @media (max-width: 768px) {
-    .nav-btn-float { width: 50px; height: 50px; font-size: 1.5rem; background: rgba(255,255,255,0.9); }
+    .nav-btn-scrap { width: 50px; height: 50px; font-size: 1.5rem; }
     .nav-prev { left: -10px; }
     .nav-next { right: -10px; }
     .polaroid-container { padding: 0 20px; }
   }
 
   /* --- ACTION BUTTONS --- */
-  .btn-elegant {
+  .btn-scrapbook {
+    border: 4px solid #2D1714;
+    font-family: 'Shrikhand', serif;
+    font-size: 1.4rem;
     padding: 16px 32px;
-    border-radius: 50px;
-    font-family: 'Titan One', cursive;
-    font-size: 1.2rem;
-    letter-spacing: 1px;
-    transition: all 0.2s;
+    transition: all 0.1s;
     display: flex; align-items: center; justify-content: center; gap: 10px;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    cursor: pointer;
     z-index: 30;
   }
 
   .btn-save {
-    background: #0ea5e9; color: white; border: 2px solid #0ea5e9;
+    background: #273A5D; 
+    color: #FEFFAF; 
+    box-shadow: 8px 8px 0 #9CA22A;
   }
   .btn-save:hover {
-    background: #0284c7; border-color: #0284c7;
-    transform: translateY(-2px);
-    box-shadow: 0 8px 20px rgba(14, 165, 233, 0.4);
+    transform: translate(-2px, -2px);
+    box-shadow: 10px 10px 0 #9CA22A;
+  }
+  .btn-save:active {
+    transform: translate(4px, 4px);
+    box-shadow: 2px 2px 0 #9CA22A;
   }
 
   .btn-retake {
-    background: white; color: #ef4444; border: 2px solid #fecaca;
+    background: #FFFAEE; 
+    color: #2D1714; 
+    box-shadow: 8px 8px 0 #2D1714;
   }
   .btn-retake:hover {
-    border-color: #ef4444; background: #fef2f2;
-    transform: translateY(-2px);
+    transform: translate(-2px, -2px);
+    box-shadow: 10px 10px 0 #2D1714;
+  }
+  .btn-retake:active {
+    transform: translate(4px, 4px);
+    box-shadow: 2px 2px 0 #2D1714;
   }
 
-  .wave-footer {
-    position: absolute; bottom: 0; left: 0; width: 100%; height: 100px;
-    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 320'%3E%3Cpath fill='%23ffffff' fill-opacity='0.4' d='M0,224L48,213.3C96,203,192,181,288,181.3C384,181,480,203,576,224C672,245,768,267,864,261.3C960,256,1056,224,1152,197.3C1248,171,1344,149,1392,138.7L1440,128L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z'%3E%3C/path%3E%3C/svg%3E");
-    background-size: cover; z-index: 1; pointer-events: none;
+  /* --- MODAL SCRAPBOOK --- */
+  .modal-scrapbook {
+    background: #FFFAEE;
+    border: 4px solid #2D1714;
+    box-shadow: 15px 15px 0 #2D1714;
+    position: relative;
+    transform: rotate(1deg);
+  }
+
+  /* Coretan Background */
+  .scribble {
+    font-family: 'Caveat', cursive;
+    color: #2D1714;
+    font-size: 2.5rem;
+    position: absolute;
+    z-index: 0;
   }
 `;
 
@@ -213,7 +181,6 @@ const MenuPage = () => {
   const [sessionImages, setSessionImages] = useState<string[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [showRetakeModal, setShowRetakeModal] = useState(false); 
-  const [bubbles, setBubbles] = useState<number[]>([]);
   
   // State untuk Slideshow
   const [isPaused, setIsPaused] = useState(false);
@@ -222,9 +189,8 @@ const MenuPage = () => {
   const { images } = (location.state || {}) as { images: string[] };
 
   useEffect(() => {
-    setBubbles(Array.from({ length: 15 }).map((_, i) => i));
-
     if (currentPhotos && currentPhotos.length > 0) {
+        // eslint-disable-next-line react-hooks/set-state-in-effect
         setSessionImages(currentPhotos);
     } else if (images && images.length > 0) {
         setSessionImages(images);
@@ -235,14 +201,13 @@ const MenuPage = () => {
 
   // --- LOGIC SLIDESHOW 2 DETIK ---
   useEffect(() => {
-    if (sessionImages.length <= 1) return; // Tidak perlu slideshow jika cuma 1 foto
+    if (sessionImages.length <= 1) return; 
 
-    // Interval jalan hanya jika TIDAK dipause
     const interval = setInterval(() => {
         if (!isPaused) {
             setCurrentIndex((prev) => (prev + 1) % sessionImages.length);
         }
-    }, 2000); // 2000ms = 2 detik
+    }, 2000); 
 
     return () => clearInterval(interval);
   }, [isPaused, sessionImages.length]);
@@ -259,35 +224,25 @@ const MenuPage = () => {
     <MainLayout>
       <style>{styles}</style>
       
-      <div className="summer-bg w-full h-full flex flex-col items-center justify-center relative">
+      {/* Background transparan agar grid dari MainLayout terlihat */}
+      <div className="w-full h-full flex flex-col items-center justify-center relative overflow-hidden">
 
-        {/* --- DECORATIONS --- */}
-        <div className="sun-deco"><FaSun /></div>
-        <div className="cloud-deco" style={{ top: '15%', fontSize: '4rem', animation: 'floatCloud 25s linear infinite' }}><FaCloud /></div>
-        <div className="cloud-deco" style={{ top: '35%', fontSize: '3rem', animation: 'floatCloud 35s linear infinite', animationDelay: '-10s' }}><FaCloud /></div>
-        <div className="palm-tree" style={{ left: '-20px', transformOrigin: 'bottom center' }}><GiPalmTree /></div>
-        <div className="palm-tree" style={{ right: '-20px', transformOrigin: 'bottom center', animationDelay: '1s' }}><GiPalmTree /></div>
-        <div className="wave-footer"></div>
-        {bubbles.map((i) => (
-          <div key={i} className="bubble" style={{
-              left: `${Math.random() * 100}%`,
-              width: `${Math.random() * 30 + 10}px`, height: `${Math.random() * 30 + 10}px`,
-              animationDuration: `${Math.random() * 5 + 4}s`, animationDelay: `${Math.random() * 5}s`
-          }} />
-        ))}
+        {/* --- DEKORASI LUAR (Coretan) --- */}
+        <div className="scribble" style={{ top: '8%', left: '10%', transform: 'rotate(-10deg)' }}>Looking good!</div>
+        <div className="scribble" style={{ bottom: '15%', right: '10%', transform: 'rotate(15deg)', fontSize: '3rem' }}>*Chef's Kiss*</div>
 
         {/* --- MAIN CONTENT --- */}
         <div className="relative z-10 flex flex-col items-center justify-center w-full h-full pb-10">
             
             {/* Title */}
-            <div className="text-center mb-6 animate-[fadeIn_0.5s_ease-out] z-30">
-                <h2 className="font-title text-5xl md:text-6xl text-white drop-shadow-md tracking-wider">
-                    YOUR MEMORIES
+            <div className="text-center mb-6 z-30">
+                <h2 className="font-shrikhand text-5xl md:text-6xl text-[#273A5D] drop-shadow-[4px_4px_0_#FEFFAF] tracking-wider transform -rotate-1">
+                    PHOTO PREVIEW
                 </h2>
-                <div className="flex items-center justify-center gap-2 mt-2">
-                   {isPaused ? <AiFillPauseCircle className="text-white/80" /> : <AiFillPlayCircle className="text-white/80" />}
-                   <p className="font-hand text-xl text-white/90 font-bold">
-                       {isPaused ? "Paused" : "Auto Previewing..."}
+                <div className="flex items-center justify-center gap-2 mt-4 bg-[#FFFAEE] border-2 border-[#2D1714] px-4 py-1 shadow-[4px_4px_0_#2D1714]">
+                   {isPaused ? <AiFillPauseCircle className="text-[#2D1714] text-xl" /> : <AiFillPlayCircle className="text-[#2D1714] text-xl" />}
+                   <p className="font-poppins text-sm text-[#2D1714] font-bold uppercase tracking-widest pt-1">
+                       {isPaused ? "Paused" : "Auto Preview"}
                    </p>
                 </div>
             </div>
@@ -301,41 +256,44 @@ const MenuPage = () => {
                 onTouchEnd={() => setIsPaused(false)}
             >
                 
-                {/* Floating Navigation Buttons (Clean & Neat) */}
-                <button onClick={prevImage} className="nav-btn-float nav-prev">
+                {/* Navigation Buttons */}
+                <button onClick={prevImage} className="nav-btn-scrap nav-prev">
                     <AiFillCaretLeft />
                 </button>
-                <button onClick={nextImage} className="nav-btn-float nav-next">
+                <button onClick={nextImage} className="nav-btn-scrap nav-next">
                     <AiFillCaretRight />
                 </button>
 
                 {/* The Frame */}
                 <div className="polaroid-frame w-full">
-                    {/* Aspect Ratio 4:3 or Video format for BIG impact */}
-                    <div className="w-full aspect-[4/3] bg-gray-100 overflow-hidden relative border border-gray-200 shadow-inner rounded-sm">
+                    {/* Washi tape pada foto */}
+                    <div className="washi-tape tape-yellow" style={{ top: '-15px', left: '35%', width: '130px', transform: 'rotate(-3deg)' }}></div>
+
+                    {/* Aspect Ratio */}
+                    <div className="w-full aspect-[4/3] bg-[#2D1714] overflow-hidden relative border-2 border-[#2D1714]">
                         <img 
                             src={sessionImages[currentIndex]} 
                             alt={`Snap ${currentIndex + 1}`} 
-                            className="w-full h-full object-cover transition-opacity duration-500" // Smooth transition
+                            className="w-full h-full object-cover transition-opacity duration-500 filter contrast-110" 
                         />
                     </div>
                     
                     {/* Details */}
-                    <span className="handwriting">FUNDAY 2025</span>
+                    <span className="handwriting">Eranivessary '26</span>
                     <span className="photo-number">#{currentIndex + 1}</span>
                 </div>
             </div>
 
             {/* Action Buttons */}
-            <div className="flex flex-col md:flex-row gap-5 w-full justify-center items-center animate-[fadeIn_1s_ease-out] mt-8">
-                <button onClick={handleSave} className="btn-elegant btn-save min-w-[280px]">
+            <div className="flex flex-col md:flex-row gap-5 w-full justify-center items-center mt-10">
+                <button onClick={handleSave} className="btn-scrapbook btn-save min-w-[280px]">
                     <AiOutlineCloudUpload size={28} />
-                    SAVE & PRINT
+                    SIMPAN & PRINT
                 </button>
 
-                <button onClick={() => setShowRetakeModal(true)} className="btn-elegant btn-retake min-w-[200px]">
+                <button onClick={() => setShowRetakeModal(true)} className="btn-scrapbook btn-retake min-w-[200px]">
                     <AiOutlineDelete size={24} />
-                    RETAKE
+                    FOTO ULANG
                 </button>
             </div>
 
@@ -343,25 +301,31 @@ const MenuPage = () => {
 
       </div>
 
-      {/* --- ELEGANT MODAL WARNING --- */}
+      {/* --- MODAL WARNING (SCRAPBOOK THEME) --- */}
       {showRetakeModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm p-4 animate-[fadeIn_0.2s]">
-            <div className="bg-white rounded-3xl p-8 max-w-sm w-full text-center shadow-2xl relative overflow-hidden">
-                <div className="w-16 h-16 bg-red-50 rounded-full flex items-center justify-center mx-auto mb-4 text-red-500 text-4xl">
+        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/50 backdrop-blur-sm p-4">
+            <div className="modal-scrapbook p-8 max-w-sm w-full text-center">
+                
+                <div className="washi-tape tape-blue" style={{ top: '-15px', left: '10%', width: '100px', transform: 'rotate(-5deg)' }}></div>
+                
+                <div className="w-16 h-16 bg-[#FEFFAF] border-2 border-[#2D1714] shadow-[4px_4px_0_#2D1714] rounded-full flex items-center justify-center mx-auto mb-6 text-[#2D1714] text-4xl">
                     <AiFillWarning />
                 </div>
-                <h3 className="font-title text-2xl text-slate-800 mb-2">Retake Session?</h3>
-                <p className="font-sans text-slate-500 mb-8 leading-relaxed">
-                    These photos will be deleted permanently. Are you sure?
+                
+                <h3 className="font-shrikhand text-3xl text-[#273A5D] mb-2 drop-shadow-[2px_2px_0_#9CA22A]">Foto Ulang?</h3>
+                <p className="font-poppins text-[#2D1714] font-semibold mb-8 leading-relaxed px-2">
+                    Foto yang sudah diambil akan terhapus. Yakin mau ulang?
                 </p>
-                <div className="flex flex-col gap-3">
-                    <button onClick={confirmRetake} className="w-full py-3 rounded-full font-bold text-white bg-red-500 hover:bg-red-600 transition-colors">
-                        Yes, Delete & Retake
+                
+                <div className="flex flex-col gap-4">
+                    <button onClick={confirmRetake} className="btn-scrapbook bg-[#9CA22A] text-[#FFFAEE] hover:bg-[#808722]">
+                        YA, HAPUS & ULANG
                     </button>
-                    <button onClick={() => setShowRetakeModal(false)} className="w-full py-3 rounded-full font-bold text-slate-500 bg-gray-100 hover:bg-gray-200 transition-colors">
-                        Cancel
+                    <button onClick={() => setShowRetakeModal(false)} className="btn-scrapbook bg-[#FFFAEE] text-[#2D1714] shadow-none hover:shadow-[4px_4px_0_#2D1714]">
+                        BATAL
                     </button>
                 </div>
+
             </div>
         </div>
       )}

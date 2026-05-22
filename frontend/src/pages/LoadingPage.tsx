@@ -3,151 +3,96 @@ import { useEffect, useRef, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import api from '../api/api';
 import { base64ToFile } from '../utils/fileHelpers';
-import { FaSun, FaCloud, FaPaperPlane, FaWifi } from 'react-icons/fa';
-import { GiPalmTree } from 'react-icons/gi';
 
 // --- STYLES ---
 const styles = `
-  @import url('https://fonts.googleapis.com/css2?family=Titan+One&family=Patrick+Hand&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Shrikhand&family=Poppins:wght@400;600;800&family=Caveat:wght@700&display=swap');
   
-  .font-title { font-family: 'Titan One', cursive; }
-  .font-hand { font-family: 'Patrick Hand', cursive; }
+  .font-shrikhand { font-family: 'Shrikhand', serif; }
+  .font-poppins { font-family: 'Poppins', sans-serif; }
+  .font-caveat { font-family: 'Caveat', cursive; }
 
-  /* BACKGROUND ANIMATION (Shared) */
-  @keyframes gradientBG {
-    0% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
-    100% { background-position: 0% 50%; }
-  }
-  @keyframes floatCloud {
-    0% { transform: translateX(-100px); opacity: 0.8; }
-    50% { opacity: 1; }
-    100% { transform: translateX(120vw); opacity: 0.8; }
-  }
-  @keyframes spinSun {
-    from { transform: rotate(0deg); }
-    to { transform: rotate(360deg); }
-  }
-  @keyframes sway {
-    0%, 100% { transform: rotate(-5deg); }
-    50% { transform: rotate(5deg); }
-  }
-  @keyframes pulseGlow {
-    0%, 100% { box-shadow: 0 0 20px rgba(255, 255, 255, 0.5); }
-    50% { box-shadow: 0 0 40px rgba(255, 255, 255, 0.8); }
-  }
-
-  /* CLASSES */
-  .summer-bg {
-    background: linear-gradient(to bottom, #4facfe 0%, #00f2fe 60%, #fff 100%);
-    overflow: hidden;
-    position: relative;
-    width: 100%; height: 100%;
-  }
-
-  .cloud-deco {
+  /* Washi Tapes */
+  .washi-tape {
     position: absolute;
-    color: rgba(255, 255, 255, 0.9);
-    filter: drop-shadow(0 4px 10px rgba(0,0,0,0.05));
-    z-index: 1; pointer-events: none;
+    height: 35px;
+    background-color: rgba(255,255,255,0.4);
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    backdrop-filter: blur(2px);
+    z-index: 10;
   }
+  .tape-blue { background-color: rgba(120, 162, 210, 0.8); }   /* #78A2D2 */
+  .tape-olive { background-color: rgba(156, 162, 42, 0.8); }    /* #9CA22A */
+  .tape-yellow { background-color: rgba(254, 255, 175, 0.9); }  /* #FEFFAF */
 
-  .sun-deco {
-    position: absolute;
-    top: -60px; right: -60px;
-    color: #FFD700;
-    font-size: 180px;
-    z-index: 0;
-    animation: spinSun 25s linear infinite;
-    filter: drop-shadow(0 0 20px rgba(255, 165, 0, 0.4));
-    pointer-events: none;
-  }
-
-  .palm-tree {
-    position: absolute;
-    bottom: -10px;
-    font-size: 150px;
-    color: #2E8B57;
-    z-index: 2;
-    filter: drop-shadow(5px 5px 0 rgba(0,0,0,0.1));
-    animation: sway 5s ease-in-out infinite alternate;
-    pointer-events: none;
-  }
-
-  /* GLASS CARD */
-  .loading-card {
-    background: rgba(255, 255, 255, 0.25);
-    backdrop-filter: blur(12px);
-    border: 2px solid rgba(255, 255, 255, 0.6);
-    border-radius: 30px;
-    padding: 30px;
-    box-shadow: 0 20px 50px rgba(0,0,0,0.15);
+  /* SCRAPBOOK CARD */
+  .scrapbook-card {
+    background: #FFFAEE;
+    border: 4px solid #2D1714;
+    padding: 40px 30px;
+    box-shadow: 12px 12px 0px #78A2D2;
     display: flex;
     flex-direction: column;
     align-items: center;
-    max-width: 450px; /* Sedikit lebih lebar */
+    max-width: 450px;
     width: 90%;
-    animation: pulseGlow 3s infinite;
-    max-height: 90vh; /* Agar tidak melebihi tinggi layar */
+    position: relative;
+    transform: rotate(1deg);
+    animation: slightShake 3s ease-in-out infinite alternate;
   }
 
-  /* PHOTO PREVIEW STRIP (VERTICAL) */
-  .photo-preview-box {
-    /* Ukuran disesuaikan dengan rasio photostrip (Memanjang ke bawah) */
+  @keyframes slightShake {
+    0% { transform: rotate(1deg); }
+    100% { transform: rotate(-1deg); }
+  }
+
+  /* PHOTO STRIP (VERTICAL) */
+  .photo-strip {
     width: 140px; 
     height: 380px; 
     padding: 8px;
-    background: white;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.25);
-    transform: rotate(-2deg);
-    margin-bottom: 20px;
-    border-radius: 4px;
-    transition: transform 0.3s;
-    border: 1px solid #e2e8f0;
+    background: #FFFAEE;
+    border: 2px solid #2D1714;
+    box-shadow: 6px 6px 0px rgba(45, 23, 20, 0.3);
+    transform: rotate(-3deg);
+    margin-bottom: 30px;
+    transition: transform 0.3s ease;
+    position: relative;
   }
   
-  /* Saat hover, luruskan agar lebih jelas */
-  .photo-preview-box:hover {
-    transform: rotate(0deg) scale(1.05);
-    z-index: 10;
+  .photo-strip:hover {
+    transform: rotate(0deg) scale(1.05) translateY(-5px);
+    box-shadow: 8px 12px 0px rgba(45, 23, 20, 0.4);
+    z-index: 20;
   }
 
-  /* PROGRESS BAR CUSTOM */
+  /* RETRO PROGRESS BAR */
   .progress-track {
-    background: rgba(255, 255, 255, 0.5);
-    border-radius: 50px;
-    height: 14px;
+    background: #FFFAEE;
+    border: 3px solid #2D1714;
+    height: 24px;
     width: 100%;
-    overflow: visible;
     position: relative;
     margin-top: 10px;
-    border: 2px solid white;
+    box-shadow: 4px 4px 0px #2D1714;
+    overflow: hidden;
   }
   
   .progress-fill {
-    background: linear-gradient(90deg, #3b82f6, #06b6d4);
-    border-radius: 50px;
+    background: #9CA22A; /* Olive Green */
     height: 100%;
     transition: width 0.3s ease-out;
+    border-right: 3px solid #2D1714;
     position: relative;
-    box-shadow: 0 0 10px rgba(6, 182, 212, 0.5);
   }
 
-  .plane-icon {
+  /* Coretan Background */
+  .scribble {
+    font-family: 'Caveat', cursive;
+    color: #2D1714;
+    font-size: 2.5rem;
     position: absolute;
-    right: -14px;
-    top: 50%;
-    transform: translateY(-50%) rotate(45deg);
-    color: #0284c7;
-    font-size: 26px;
-    filter: drop-shadow(2px 2px 0 rgba(255,255,255,0.5));
-    transition: all 0.3s ease-out;
-  }
-
-  .wave-footer {
-    position: absolute; bottom: 0; left: 0; width: 100%; height: 100px;
-    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 320'%3E%3Cpath fill='%23ffffff' fill-opacity='0.4' d='M0,224L48,213.3C96,203,192,181,288,181.3C384,181,480,203,576,224C672,245,768,267,864,261.3C960,256,1056,224,1152,197.3C1248,171,1344,149,1392,138.7L1440,128L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z'%3E%3C/path%3E%3C/svg%3E");
-    background-size: cover; z-index: 1; pointer-events: none;
+    z-index: 0;
   }
 `;
 
@@ -236,49 +181,50 @@ const LoadingPage = () => {
     <MainLayout isFullScreen={true}>
       <style>{styles}</style>
       
-      <div className="summer-bg w-full h-full flex flex-col items-center justify-center relative">
+      {/* Container utama transparan karena background kertas grid sudah ada di MainLayout */}
+      <div className="w-full h-full flex flex-col items-center justify-center relative overflow-hidden">
         
-        {/* --- BACKGROUND DECORATIONS --- */}
-        <div className="sun-deco"><FaSun /></div>
-        <div className="cloud-deco" style={{ top: '15%', fontSize: '4rem', animation: 'floatCloud 25s linear infinite' }}><FaCloud /></div>
-        <div className="cloud-deco" style={{ top: '35%', fontSize: '3rem', animation: 'floatCloud 35s linear infinite', animationDelay: '-10s' }}><FaCloud /></div>
-        
-        <div className="palm-tree" style={{ left: '-20px', transformOrigin: 'bottom center' }}><GiPalmTree /></div>
-        <div className="palm-tree" style={{ right: '-20px', transformOrigin: 'bottom center', animationDelay: '1s' }}><GiPalmTree /></div>
-        
-        <div className="wave-footer"></div>
+        {/* --- DEKORASI LUAR (Coretan) --- */}
+        <div className="scribble" style={{ top: '15%', left: '10%', transform: 'rotate(-15deg)' }}>Hold on tight!</div>
+        <div className="scribble" style={{ bottom: '20%', right: '15%', transform: 'rotate(10deg)', fontSize: '3rem' }}>Almost done...</div>
 
-        {/* --- MAIN CONTENT (GLASS CARD) --- */}
+        {/* --- MAIN CONTENT (SCRAPBOOK PAPER CARD) --- */}
         <div className="relative z-20 w-full flex justify-center px-4">
             
-            <div className="loading-card">
+            <div className="scrapbook-card">
                 
+                {/* Washi Tapes menempelkan card ke background */}
+                <div className="washi-tape tape-yellow" style={{ top: '-15px', left: '-20px', width: '100px', transform: 'rotate(-45deg)' }}></div>
+                <div className="washi-tape tape-blue" style={{ top: '-15px', right: '-20px', width: '100px', transform: 'rotate(45deg)' }}></div>
+
                 {/* Title */}
-                <h2 className="font-title text-3xl text-white drop-shadow-md mb-4 flex items-center gap-3">
-                     SENDING... <FaWifi className="animate-pulse text-xl" />
+                <h2 className="font-shrikhand text-4xl text-[#273A5D] mb-6 tracking-wide drop-shadow-[2px_2px_0_#9CA22A]">
+                    PASTING...
                 </h2>
 
-                {/* Photo Preview Strip (Vertical Full View) */}
-                <div className="photo-preview-box">
+                {/* Photo Preview Strip */}
+                <div className="photo-strip">
+                    {/* Washi tape kecil di atas foto */}
+                    <div className="washi-tape tape-olive" style={{ top: '-10px', left: '15%', width: '70%', height: '20px', transform: 'rotate(2deg)' }}></div>
+                    
                     {previewImage ? (
-                        <div className="w-full h-full bg-gray-100 overflow-hidden border border-gray-200">
-                            {/* KUNCI: Object-contain dan h-full agar strip vertikal terlihat utuh */}
+                        <div className="w-full h-full bg-[#2D1714] overflow-hidden border-2 border-[#2D1714]">
                             <img 
                                 src={previewImage} 
                                 alt="Uploading" 
-                                className="w-full h-full object-contain" 
+                                className="w-full h-full object-contain filter contrast-125" 
                             />
                         </div>
                     ) : (
-                        <div className="w-full h-full bg-gray-100 flex items-center justify-center text-gray-400">
-                            Loading...
+                        <div className="w-full h-full bg-[#FFFAEE] border-2 border-[#2D1714] flex items-center justify-center text-[#2D1714] font-caveat text-2xl font-bold">
+                            Waiting...
                         </div>
                     )}
                 </div>
 
                 {/* Progress Bar Container */}
-                <div className="w-full">
-                    <div className="flex justify-between text-white font-bold text-sm mb-1 px-1 drop-shadow-sm">
+                <div className="w-full mt-2">
+                    <div className="flex justify-between text-[#2D1714] font-poppins font-bold text-sm mb-1 px-1 uppercase tracking-wider">
                         <span>Uploading to Cloud</span>
                         <span>{Math.round(progress)}%</span>
                     </div>
@@ -287,14 +233,11 @@ const LoadingPage = () => {
                         <div 
                             className="progress-fill" 
                             style={{ width: `${progress}%` }}
-                        >
-                             {/* Plane Icon */}
-                             <FaPaperPlane className="plane-icon" />
-                        </div>
+                        ></div>
                     </div>
 
-                    <p className="text-white/90 font-hand text-center mt-3 text-lg font-bold drop-shadow-sm">
-                        Menyimpan...
+                    <p className="text-[#2D1714] font-caveat text-center mt-4 text-2xl font-bold">
+                        Menyimpan momenmu...
                     </p>
                 </div>
 
